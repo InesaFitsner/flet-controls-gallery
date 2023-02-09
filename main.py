@@ -1,18 +1,39 @@
 import flet as ft
 
+class GridItem():
+    def __init__(self, name):
+        self.id = name.lower()
+        self.name = name
+        self.file_name = f"{self.id}.svg"
+
+
 def main(page: ft.Page):
 
-    layout = ["Page", "View", "Container", "Row", "Column", "Stack", "ListView", "ListTile", "GridView", "ResponsiveRow", "DataTable", "Tabs", "Card", "Divider", "VerticalDivider"]
-    navigation = ["AppBar", "NavigationRail", "NavigationBar"]
-    display = ["Text", "Icon", "Image", "Markdown", "CircleAvatar", "ProgressBar", "ProgressRing"]
+    layout = [GridItem("Page"), GridItem("View"), GridItem("Container"), GridItem("Row"), GridItem("Column"), GridItem("Stack"), GridItem("ListView"), GridItem("ListTile"), GridItem("GridView"), GridItem("ResponsiveRow"), GridItem("DataTable"), GridItem("Tabs"), GridItem("Card"), GridItem("Divider"), GridItem("VerticalDivider")]
+    navigation = [GridItem("AppBar"), GridItem("NavigationRail"), GridItem("NavigationBar")]
+    display = [GridItem("Text"), GridItem("Icon"), GridItem("Image"), GridItem("Markdown"), GridItem("CircleAvatar"), GridItem("ProgressBar"), GridItem("ProgressRing")]
 
     control_groups = [layout, navigation, display]
+
+    def grid_item_clicked(e):
+        print(e.control.data)
 
     def control_selected(e):
         print(control_groups[e.control.selected_index])
         grid.controls = []
-        for control in control_groups[e.control.selected_index]:
-            grid.controls.append(ft.Container(bgcolor=ft.colors.SURFACE_VARIANT, content=ft.Text(control)))
+        for grid_item in control_groups[e.control.selected_index]:
+            grid.controls.append(ft.Container(
+                bgcolor=ft.colors.SURFACE_VARIANT, 
+                content=ft.Column(
+                    alignment=ft.MainAxisAlignment.SPACE_EVENLY,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=[
+                        ft.Image(src=grid_item.file_name, width=40), 
+                        ft.Text(grid_item.name, style=ft.TextThemeStyle.TITLE_SMALL)]
+                    ),
+                on_click=grid_item_clicked,
+                data = grid_item.id
+            ))
         page.update()
 
 
