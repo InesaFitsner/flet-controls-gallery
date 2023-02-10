@@ -1,25 +1,26 @@
 import flet as ft
-
-class GridItem():
-    def __init__(self, name):
-        self.id = name.lower()
-        self.name = name
-        self.file_name = f"{self.id}.svg"
-
+from grid_item import GridItem
+from container_examples.index import container_grid_item
 
 def main(page: ft.Page):
 
-    layout = [GridItem("Page"), GridItem("View"), GridItem("Container"), GridItem("Row"), GridItem("Column"), GridItem("Stack"), GridItem("ListView"), GridItem("ListTile"), GridItem("GridView"), GridItem("ResponsiveRow"), GridItem("DataTable"), GridItem("Tabs"), GridItem("Card"), GridItem("Divider"), GridItem("VerticalDivider")]
+    layout = [GridItem("Page"), GridItem("View"), container_grid_item, GridItem("Row"), GridItem("Column"), GridItem("Stack"), GridItem("ListView"), GridItem("ListTile"), GridItem("GridView"), GridItem("ResponsiveRow"), GridItem("DataTable"), GridItem("Tabs"), GridItem("Card"), GridItem("Divider"), GridItem("VerticalDivider")]
     navigation = [GridItem("AppBar"), GridItem("NavigationRail"), GridItem("NavigationBar")]
     display = [GridItem("Text"), GridItem("Icon"), GridItem("Image"), GridItem("Markdown"), GridItem("CircleAvatar"), GridItem("ProgressBar"), GridItem("ProgressRing")]
 
     control_groups = [layout, navigation, display]
 
     def grid_item_clicked(e):
-        print(e.control.data)
+        grid.visible = False
+        examples.visible = True
+        control_name.value = e.control.data.name
+        control_description.value = e.control.data.description
+        listview.controls = e.control.data.examples
+        page.update()
 
     def control_selected(e):
-        print(control_groups[e.control.selected_index])
+        grid.visible = True
+        examples.visible = False
         grid.controls = []
         for grid_item in control_groups[e.control.selected_index]:
             grid.controls.append(ft.Container(
@@ -32,7 +33,7 @@ def main(page: ft.Page):
                         ft.Text(grid_item.name, style=ft.TextThemeStyle.TITLE_SMALL)]
                     ),
                 on_click=grid_item_clicked,
-                data = grid_item.id
+                data = grid_item
             ))
         page.update()
 
@@ -87,6 +88,14 @@ def main(page: ft.Page):
         run_spacing=5,
     )
 
+    control_name = ft.Text(style=ft.TextThemeStyle.HEADLINE_MEDIUM)
+    control_description = ft.Text(style=ft.TextThemeStyle.BODY_SMALL)
+    listview = ft.ListView(expand=True, spacing=10, padding=20, auto_scroll=False)
+
+    examples = ft.Column(visible=False, expand=True, controls=[
+        control_name, control_description, listview
+    ])
+
     page.appbar = ft.AppBar(
         leading=ft.Image(src=f"logo.svg"),
         leading_width=40,
@@ -102,7 +111,8 @@ def main(page: ft.Page):
                 rail,
                 ft.VerticalDivider(width=1),
                 #ft.Column([ ft.Text("Body!")], alignment=ft.MainAxisAlignment.START, expand=True),
-                grid
+                grid,
+                examples
             ],
             expand=True,
         )
