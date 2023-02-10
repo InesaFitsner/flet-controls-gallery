@@ -1,11 +1,29 @@
 import flet as ft
 from grid_item import GridItem
 from container_examples.index import container_grid_item
+from column_examples.index import column_grid_item
 
 def main(page: ft.Page):
 
-    layout = [GridItem("Page"), GridItem("View"), container_grid_item, GridItem("Row"), GridItem("Column"), GridItem("Stack"), GridItem("ListView"), GridItem("ListTile"), GridItem("GridView"), GridItem("ResponsiveRow"), GridItem("DataTable"), GridItem("Tabs"), GridItem("Card"), GridItem("Divider"), GridItem("VerticalDivider")]
+    layout = [
+        GridItem("Page"), 
+        GridItem("View"), 
+        container_grid_item, 
+        GridItem("Row"), 
+        column_grid_item, 
+        GridItem("Stack"), 
+        GridItem("ListView"), 
+        GridItem("ListTile"), 
+        GridItem("GridView"), 
+        GridItem("ResponsiveRow"), 
+        GridItem("DataTable"), 
+        GridItem("Tabs"), 
+        GridItem("Card"), 
+        GridItem("Divider"), 
+        GridItem("VerticalDivider")]
+    
     navigation = [GridItem("AppBar"), GridItem("NavigationRail"), GridItem("NavigationBar")]
+    
     display = [GridItem("Text"), GridItem("Icon"), GridItem("Image"), GridItem("Markdown"), GridItem("CircleAvatar"), GridItem("ProgressBar"), GridItem("ProgressRing")]
 
     control_groups = [layout, navigation, display]
@@ -29,7 +47,7 @@ def main(page: ft.Page):
                     alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
-                        ft.Image(src=grid_item.file_name, width=40), 
+                        ft.Image(src=grid_item.image_file_name, width=40), 
                         ft.Text(grid_item.name, style=ft.TextThemeStyle.TITLE_SMALL)]
                     ),
                 on_click=grid_item_clicked,
