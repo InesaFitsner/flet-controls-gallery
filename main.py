@@ -1,9 +1,11 @@
 import os
 from os.path import isfile, join
 from pathlib import Path
+import importlib.util
+import sys
 import flet as ft
 from grid_item import GridItem
-#from container.index import container_grid_item
+#import layout.container.index
 #from column.index import column_grid_item
 
 def main(page: ft.Page):
@@ -19,28 +21,29 @@ def main(page: ft.Page):
             destinations.append(ft.NavigationRailDestination(icon=destination['icon'], selected_icon=destination['selected_icon'], label=destination['label']))
         return destinations
     
-    layout = [
-        GridItem("Page"), 
-        GridItem("View"), 
-        #container_grid_item, 
-        GridItem("Row"), 
-        #column_grid_item, 
-        GridItem("Stack"), 
-        GridItem("ListView"), 
-        GridItem("ListTile"), 
-        GridItem("GridView"), 
-        GridItem("ResponsiveRow"), 
-        GridItem("DataTable"), 
-        GridItem("Tabs"), 
-        GridItem("Card"), 
-        GridItem("Divider"), 
-        GridItem("VerticalDivider")]
-    
-    navigation = [GridItem("AppBar"), GridItem("NavigationRail"), GridItem("NavigationBar")]
-    
-    display = [GridItem("Text"), GridItem("Icon"), GridItem("Image"), GridItem("Markdown"), GridItem("CircleAvatar"), GridItem("ProgressBar"), GridItem("ProgressRing")]
 
-    control_groups = [layout, navigation, display]
+    # layout = [
+    #     GridItem("Page"), 
+    #     GridItem("View"), 
+    #     #container_grid_item, 
+    #     GridItem("Row"), 
+    #     #column_grid_item, 
+    #     GridItem("Stack"), 
+    #     GridItem("ListView"), 
+    #     GridItem("ListTile"), 
+    #     GridItem("GridView"), 
+    #     GridItem("ResponsiveRow"), 
+    #     GridItem("DataTable"), 
+    #     GridItem("Tabs"), 
+    #     GridItem("Card"), 
+    #     GridItem("Divider"), 
+    #     GridItem("VerticalDivider")]
+    
+    # navigation = [GridItem("AppBar"), GridItem("NavigationRail"), GridItem("NavigationBar")]
+    
+    # display = [GridItem("Text"), GridItem("Icon"), GridItem("Image"), GridItem("Markdown"), GridItem("CircleAvatar"), GridItem("ProgressBar"), GridItem("ProgressRing")]
+
+    # control_groups = [layout, navigation, display]
 
     def grid_item_clicked(e):
         grid.visible = False
@@ -70,6 +73,7 @@ def main(page: ft.Page):
         #for grid_item in list_control_dirs(e.control.data)
         folder = destinations_dic_list[e.control.selected_index]['name']
         for control in list_control_dirs(folder):
+            name = import_control_modules(destinations_dic_list[e.control.selected_index]['name'], control)
             grid.controls.append(ft.Container(
                 bgcolor=ft.colors.SURFACE_VARIANT,
                 content=ft.Column(
@@ -77,34 +81,93 @@ def main(page: ft.Page):
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
                         ft.Image(src='column.svg', width=40), 
-                        ft.Text(value=control, style=ft.TextThemeStyle.TITLE_SMALL)]
+                        ft.Text(value=name, style=ft.TextThemeStyle.TITLE_SMALL)]
                     )
                 ))
         page.update()
     
     def list_control_group_dirs():
         control_group_dirs = [f for f in os.listdir() if not isfile(f) and f not in ['images', '__pycache__', '.venv', '.git']]
-        print(control_group_dirs)
+        #print(control_group_dirs)
         return control_group_dirs
 
     def list_control_dirs(dir):
         #print(os.listdir())
         file_path = os.path.join(str(Path(__file__).parent), dir)
         control_dirs = [f for f in os.listdir(file_path) if not isfile(f) and f not in ['index.py','images', '__pycache__', '.venv', '.git']]
-        print(control_dirs)
+        #print(control_dirs)
         return control_dirs
 
     def list_example_files(control_group_dir, control_dir):
         #file_path = os.path.join(str(Path(__file__).parent), os.path.sep, dir)
         file_path = os.path.join(str(Path(__file__).parent), control_group_dir, control_dir)
         example_files = [f for f in os.listdir(file_path) if f not in ['__pycache__']]
-        print(example_files)
+        #print(example_files)
+        return example_files
 
-    for control_group_dir in list_control_group_dirs():
-        for control_dir in list_control_dirs(control_group_dir):
-            list_example_files(control_group_dir, control_dir)
+    def get_module_name(file_name):
+        return file_name.replace("/", ".").replace(".py", "")
 
+    # def import_modules():
+    #     for control_group_dir in list_control_group_dirs():
+    #         for control_dir in list_control_dirs(control_group_dir):
+    #             for file in list_example_files(control_group_dir, control_dir):
+    #                 file_name = os.path.join(control_group_dir, control_dir, file)
+    #                 #print(file_name)
+    #                 module_name = get_module_name(file_name=file_name)
+    #                 #print(module_name)
+    #                 if module_name in sys.modules:
+    #                     print(f"{module_name!r} already in sys.modules")
+    #                     #return True
+    #                 else:
+    #                     file_path = os.path.join(str(Path(__file__).parent), file_name)
+    #                     #print(file_path)
+    #                     spec = importlib.util.spec_from_file_location(module_name, file_path)
+    #                     module = importlib.util.module_from_spec(spec)
+    #                     print(module)
+    #                     sys.modules[module_name] = module
+    #                     spec.loader.exec_module(module)
+    #                     print(f"{module_name!r} has been imported")
+    #                     if file =='index.py':
+    #                         print(module.name)
+    #                     else: 
+    #                         print(module.example)
 
+    def import_control_modules(control_group_dir, control_dir):
+
+        for file in list_example_files(control_group_dir, control_dir):
+            file_name = os.path.join(control_group_dir, control_dir, file)
+        #             #print(file_name)
+            module_name = get_module_name(file_name=file_name)
+        #             #print(module_name)
+            if module_name in sys.modules:
+                print(f"{module_name!r} already in sys.modules")
+        #                 #return True
+            else:
+                file_path = os.path.join(str(Path(__file__).parent), file_name)
+        #                 #print(file_path)
+                spec = importlib.util.spec_from_file_location(module_name, file_path)
+                module = importlib.util.module_from_spec(spec)
+        #                 print(module)
+                sys.modules[module_name] = module
+                spec.loader.exec_module(module)
+                print(f"{module_name!r} has been imported")
+                if file =='index.py':
+                    return module.name
+                else: 
+                    print(module.example)
+    
+
+    
+    # for control_group_dir in list_control_group_dirs():
+    #     for control_dir in list_control_dirs(control_group_dir):
+    #         list_example_files(control_group_dir, control_dir)
+
+    #import_modules()
+    #import_index_modules()
+    #import_control_modules('layout','container')
+    #print(sys.modules)
+    #print(layout.container.index.name)
 
     rail = ft.NavigationRail(
         extended=True,
