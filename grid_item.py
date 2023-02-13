@@ -8,7 +8,5 @@ class GridItem():
 
 class ExampleItem():
     def __init__(self):
-        #super().__init__()
         self.name = None
-        #self.file_name = file_name
         self.example = None

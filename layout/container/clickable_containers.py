@@ -2,11 +2,11 @@ import flet as ft
 
 name = "Clickable containers"
 
-def on_click(e):
-    print("Container clicked")
 
-    
-example = ft.Container(
+def example():
+    def on_click(e):
+        print("Container clicked")
+    return ft.Container(
                     content=ft.Text("Non clickable"),
                     margin=10,
                     padding=10,

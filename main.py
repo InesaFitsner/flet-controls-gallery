@@ -56,7 +56,7 @@ def main(page: ft.Page):
             listview.controls.append(ft.Column(controls = [
             ft.Text(example.name), 
             ft.Row(controls = [
-                example.example, 
+                example.example(), 
                 ft.VerticalDivider(width=1), 
                 ft.Text("This is code")]), 
         ]
@@ -101,10 +101,10 @@ def main(page: ft.Page):
                 ))
         page.update()
     
-    def list_control_group_dirs():
-        control_group_dirs = [f for f in os.listdir() if not isfile(f) and f not in ['images', '__pycache__', '.venv', '.git']]
-        #print(control_group_dirs)
-        return control_group_dirs
+    # def list_control_group_dirs():
+    #     control_group_dirs = [f for f in os.listdir() if not isfile(f) and f not in ['images', '__pycache__', '.venv', '.git']]
+    #     #print(control_group_dirs)
+    #     return control_group_dirs
 
     def list_control_dirs(dir):
         #print(os.listdir())
@@ -157,8 +157,6 @@ def main(page: ft.Page):
                             example_item.example = module.example
                             example_item.name = module.name
                             grid_item.examples.append(example_item)
-                            #grid_item.examples = 
-                            #print(module.example)
                 control_group_dir['grid_items'].append(grid_item)
 
     # def import_control_modules(control_group_dir, control_dir):
@@ -280,4 +278,4 @@ def main(page: ft.Page):
 
 
 
-ft.app(target=main, assets_dir="images")
+ft.app(target=main, assets_dir="images", view=ft.WEB_BROWSER)
