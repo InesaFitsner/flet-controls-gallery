@@ -4,16 +4,17 @@ from pathlib import Path
 import importlib.util
 import sys
 import flet as ft
-from grid_item import GridItem
+from grid_item import GridItem, ExampleItem
+#from example_item import ExampleItem
 #import layout.container.index
 #from column.index import column_grid_item
 
 def main(page: ft.Page):
 
     destinations_dic_list = [
-        {'name':'layout', 'label':'Layout', 'icon':ft.icons.GRID_VIEW, 'selected_icon':ft.icons.GRID_VIEW_SHARP}, 
-        {'name':'navigation', 'label':'Navigation', 'icon':ft.icons.MENU, 'selected_icon':ft.icons.MENU}, 
-        {'name':'display', 'label':'Display', 'icon':ft.icons.INFO_OUTLINED, 'selected_icon':ft.icons.INFO_SHARP}]
+        {'name':'layout', 'label':'Layout', 'icon':ft.icons.GRID_VIEW, 'selected_icon':ft.icons.GRID_VIEW_SHARP, 'grid_items':[]}, 
+        {'name':'navigation', 'label':'Navigation', 'icon':ft.icons.MENU, 'selected_icon':ft.icons.MENU, 'grid_items':[]}, 
+        {'name':'display', 'label':'Display', 'icon':ft.icons.INFO_OUTLINED, 'selected_icon':ft.icons.INFO_SHARP, 'grid_items':[]}]
     
     def get_destinations():
         destinations = []
@@ -50,7 +51,18 @@ def main(page: ft.Page):
         examples.visible = True
         control_name.value = e.control.data.name
         control_description.value = e.control.data.description
-        listview.controls = e.control.data.examples
+        print(e.control.data.examples)
+        for example in e.control.data.examples:
+            listview.controls.append(ft.Column(controls = [
+            ft.Text(example.name), 
+            ft.Row(controls = [
+                example.example, 
+                ft.VerticalDivider(width=1), 
+                ft.Text("This is code")]), 
+        ]
+))
+                
+        #listview.controls = e.control.data.examples
         page.update()
 
     def control_group_selected(e):
@@ -72,16 +84,19 @@ def main(page: ft.Page):
         #     ))
         #for grid_item in list_control_dirs(e.control.data)
         folder = destinations_dic_list[e.control.selected_index]['name']
-        for control in list_control_dirs(folder):
-            name = import_control_modules(destinations_dic_list[e.control.selected_index]['name'], control)
+        #for control in list_control_dirs(folder):
+        for grid_item in destinations_dic_list[e.control.selected_index]['grid_items']:
+            #name = import_control_modules(destinations_dic_list[e.control.selected_index]['name'], control)
             grid.controls.append(ft.Container(
+                on_click=grid_item_clicked,
+                data=grid_item, 
                 bgcolor=ft.colors.SURFACE_VARIANT,
                 content=ft.Column(
                     alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
-                        ft.Image(src='column.svg', width=40), 
-                        ft.Text(value=name, style=ft.TextThemeStyle.TITLE_SMALL)]
+                        ft.Image(src=grid_item.image_file_name, width=40), 
+                        ft.Text(value=grid_item.name, style=ft.TextThemeStyle.TITLE_SMALL)]
                     )
                 ))
         page.update()
@@ -108,54 +123,67 @@ def main(page: ft.Page):
     def get_module_name(file_name):
         return file_name.replace("/", ".").replace(".py", "")
 
-    # def import_modules():
-    #     for control_group_dir in list_control_group_dirs():
-    #         for control_dir in list_control_dirs(control_group_dir):
-    #             for file in list_example_files(control_group_dir, control_dir):
-    #                 file_name = os.path.join(control_group_dir, control_dir, file)
-    #                 #print(file_name)
-    #                 module_name = get_module_name(file_name=file_name)
-    #                 #print(module_name)
-    #                 if module_name in sys.modules:
-    #                     print(f"{module_name!r} already in sys.modules")
-    #                     #return True
-    #                 else:
-    #                     file_path = os.path.join(str(Path(__file__).parent), file_name)
-    #                     #print(file_path)
-    #                     spec = importlib.util.spec_from_file_location(module_name, file_path)
-    #                     module = importlib.util.module_from_spec(spec)
-    #                     print(module)
-    #                     sys.modules[module_name] = module
-    #                     spec.loader.exec_module(module)
-    #                     print(f"{module_name!r} has been imported")
-    #                     if file =='index.py':
-    #                         print(module.name)
-    #                     else: 
-    #                         print(module.example)
+    def import_modules():
+        #for control_group_dir in list_control_group_dirs():
+        for control_group_dir in destinations_dic_list:
+            for control_dir in list_control_dirs(control_group_dir['name']):
+                grid_item = GridItem(control_dir)
+                for file in list_example_files(control_group_dir['name'], control_dir):
+                    file_name = os.path.join(control_group_dir['name'], control_dir, file)
+                    #print(file_name)
+                    module_name = get_module_name(file_name=file_name)
+                    #print(module_name)
+                    if module_name in sys.modules:
+                        print(f"{module_name!r} already in sys.modules")
+                        #return True
+                    else:
+                        file_path = os.path.join(str(Path(__file__).parent), file_name)
+                        #print(file_path)
+                        spec = importlib.util.spec_from_file_location(module_name, file_path)
+                        module = importlib.util.module_from_spec(spec)
+                        print(module)
+                        sys.modules[module_name] = module
+                        spec.loader.exec_module(module)
+                        print(f"{module_name!r} has been imported")
+                        if file =='index.py':
+                            #grid_item = GridItem()
+                            grid_item.name = module.name
+                            grid_item.image_file_name = module.image_file
+                            grid_item.description = module.description
+                            #control_group_dir['grid_items'].append(grid_item)
+                            #print(module.name)
+                        else:
+                            example_item = ExampleItem() 
+                            example_item.example = module.example
+                            example_item.name = module.name
+                            grid_item.examples.append(example_item)
+                            #grid_item.examples = 
+                            #print(module.example)
+                control_group_dir['grid_items'].append(grid_item)
 
-    def import_control_modules(control_group_dir, control_dir):
+    # def import_control_modules(control_group_dir, control_dir):
 
-        for file in list_example_files(control_group_dir, control_dir):
-            file_name = os.path.join(control_group_dir, control_dir, file)
-        #             #print(file_name)
-            module_name = get_module_name(file_name=file_name)
-        #             #print(module_name)
-            if module_name in sys.modules:
-                print(f"{module_name!r} already in sys.modules")
-        #                 #return True
-            else:
-                file_path = os.path.join(str(Path(__file__).parent), file_name)
-        #                 #print(file_path)
-                spec = importlib.util.spec_from_file_location(module_name, file_path)
-                module = importlib.util.module_from_spec(spec)
-        #                 print(module)
-                sys.modules[module_name] = module
-                spec.loader.exec_module(module)
-                print(f"{module_name!r} has been imported")
-                if file =='index.py':
-                    return module.name
-                else: 
-                    print(module.example)
+    #     for file in list_example_files(control_group_dir, control_dir):
+    #         file_name = os.path.join(control_group_dir, control_dir, file)
+    #     #             #print(file_name)
+    #         module_name = get_module_name(file_name=file_name)
+    #     #             #print(module_name)
+    #         if module_name in sys.modules:
+    #             print(f"{module_name!r} already in sys.modules")
+    #     #                 #return True
+    #         else:
+    #             file_path = os.path.join(str(Path(__file__).parent), file_name)
+    #     #                 #print(file_path)
+    #             spec = importlib.util.spec_from_file_location(module_name, file_path)
+    #             module = importlib.util.module_from_spec(spec)
+    #     #                 print(module)
+    #             sys.modules[module_name] = module
+    #             spec.loader.exec_module(module)
+    #             print(f"{module_name!r} has been imported")
+    #             if file =='index.py':
+    #                 return module.name
+    #             else: 
+    #                 print(module.example)
     
 
     
@@ -163,7 +191,7 @@ def main(page: ft.Page):
     #     for control_dir in list_control_dirs(control_group_dir):
     #         list_example_files(control_group_dir, control_dir)
 
-    #import_modules()
+    import_modules()
     #import_index_modules()
     #import_control_modules('layout','container')
     #print(sys.modules)

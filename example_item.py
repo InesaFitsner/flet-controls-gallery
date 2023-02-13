@@ -3,22 +3,22 @@
 # import importlib.util
 # import sys
 
-# import flet as ft
+import flet as ft
 
-# class ExampleItem(ft.Column):
-#     def __init__(self, name, file_name):
-#         super().__init__()
-#         self.name = name
-#         self.file_name = file_name
-
-#         self.get_example()
-#         self.controls = [
-#             ft.Text(self.name), 
-#             ft.Row(controls = [
-#                 self.example, 
-#                 ft.VerticalDivider(width=1), 
-#                 ft.Text("This is code")]), 
-#         ]
+class ExampleItem(ft.Column):
+    def __init__(self):
+        super().__init__()
+        self.name = None
+        #self.file_name = file_name
+        self.example = None
+        #self.get_example()
+        self.controls = [
+            ft.Text(self.name), 
+            ft.Row(controls = [
+                self.example, 
+                ft.VerticalDivider(width=1), 
+                ft.Text("This is code")]), 
+        ]
 
 #     def get_module_name(self):
 #         self.module_name = self.file_name.replace("/", ".").replace(".py", "")

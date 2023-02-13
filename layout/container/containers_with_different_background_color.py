@@ -1,5 +1,7 @@
 import flet as ft
 
+name = "Containers with different background color"
+
 example = ft.Column(controls=[
     ft.Container(
         content=ft.ElevatedButton("Elevated Button in Container"),
