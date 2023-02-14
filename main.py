@@ -19,21 +19,30 @@ class ExampleItem():
         self.example = None
         self.source_code = None
 
+class ControlGroup():
+    def __init__(self, name, label, icon, selected_icon):
+        self.name = name
+        self.label = label
+        self.icon = icon
+        self.selected_icon = selected_icon
+        self.grid_items = []
+
+
 class GalleryData():
     def __init__(self):
         self.import_modules()
 
 
-    destinations_dic_list = [
-        {'name':'layout', 'label':'Layout', 'icon':ft.icons.GRID_VIEW, 'selected_icon':ft.icons.GRID_VIEW_SHARP, 'grid_items':[]}, 
-        {'name':'navigation', 'label':'Navigation', 'icon':ft.icons.MENU, 'selected_icon':ft.icons.MENU, 'grid_items':[]}, 
-        {'name':'display', 'label':'Display', 'icon':ft.icons.INFO_OUTLINED, 'selected_icon':ft.icons.INFO_SHARP, 'grid_items':[]},
-        {'name':'buttons', 'label':'Buttons', 'icon':ft.icons.SMART_BUTTON, 'selected_icon':ft.icons.SMART_BUTTON, 'grid_items':[]},
-        {'name':'input', 'label':'Input', 'icon':ft.icons.INPUT, 'selected_icon':ft.icons.INPUT, 'grid_items':[]},
-        {'name':'dialogs', 'label':'Dialogs', 'icon':ft.icons.MESSAGE_OUTLINED, 'selected_icon':ft.icons.MESSAGE_SHARP, 'grid_items':[]},
-        {'name':'charts', 'label':'Charts', 'icon':ft.icons.BAR_CHART_SHARP, 'selected_icon':ft.icons.BAR_CHART_SHARP, 'grid_items':[]},
-        {'name':'animations', 'label':'Animations', 'icon':ft.icons.ANIMATION, 'selected_icon':ft.icons.ANIMATION, 'grid_items':[]},
-        {'name':'utility', 'label':'Utility', 'icon':ft.icons.PAN_TOOL_OUTLINED, 'selected_icon':ft.icons.PAN_TOOL_SHARP, 'grid_items':[]}
+    destinations_list = [
+        ControlGroup(name='layout', label='Layout', icon=ft.icons.GRID_VIEW, selected_icon=ft.icons.GRID_VIEW_SHARP),
+        ControlGroup(name='navigation', label='Navigation', icon=ft.icons.MENU, selected_icon=ft.icons.MENU),
+        ControlGroup(name='display', label='Display', icon=ft.icons.INFO_OUTLINED, selected_icon=ft.icons.INFO_SHARP),
+        ControlGroup(name='buttons', label='Buttons', icon=ft.icons.SMART_BUTTON, selected_icon=ft.icons.SMART_BUTTON),
+        ControlGroup(name='input', label='Input', icon=ft.icons.GRID_VIEW, selected_icon=ft.icons.GRID_VIEW_SHARP),
+        ControlGroup(name='dialogs', label='Dialogs', icon=ft.icons.INPUT, selected_icon=ft.icons.INPUT),
+        ControlGroup(name='charts', label='Charts', icon=ft.icons.MESSAGE_OUTLINED, selected_icon=ft.icons.MESSAGE_SHARP),
+        ControlGroup(name='animations', label='Animations', icon=ft.icons.ANIMATION, selected_icon=ft.icons.ANIMATION),
+        ControlGroup(name='utility', label='Utility', icon=ft.icons.PAN_TOOL_OUTLINED, selected_icon=ft.icons.PAN_TOOL_SHARP)
     ]
     
     def list_control_dirs(self, dir):
@@ -47,13 +56,13 @@ class GalleryData():
         return example_files
 
     def import_modules(self):
-        for control_group_dir in self.destinations_dic_list:
-            for control_dir in self.list_control_dirs(control_group_dir['name']):
+        for control_group_dir in self.destinations_list:
+            for control_dir in self.list_control_dirs(control_group_dir.name):
                 
                 grid_item = GridItem(control_dir)
                 
-                for file in self.list_example_files(control_group_dir['name'], control_dir):
-                    file_name = os.path.join(control_group_dir['name'], control_dir, file)
+                for file in self.list_example_files(control_group_dir.name, control_dir):
+                    file_name = os.path.join(control_group_dir.name, control_dir, file)
                     module_name = file_name.replace("/", ".").replace(".py", "")
                     
                     if module_name in sys.modules:
@@ -79,7 +88,7 @@ class GalleryData():
                             example_item.example = module.example
                             example_item.name = module.name
                             grid_item.examples.append(example_item)
-                control_group_dir['grid_items'].append(grid_item)
+                control_group_dir.grid_items.append(grid_item)
 
 
 gallery = GalleryData()
@@ -110,7 +119,7 @@ def main(page: ft.Page):
         grid.visible = True
         examples.visible = False
         grid.controls = []
-        for grid_item in gallery.destinations_dic_list[e.control.selected_index]['grid_items']:
+        for grid_item in gallery.destinations_list[e.control.selected_index].grid_items:
             grid.controls.append(ft.Container(
                 on_click=grid_item_clicked,
                 data=grid_item, 
@@ -127,8 +136,8 @@ def main(page: ft.Page):
     
     def get_destinations():
         destinations = []
-        for destination in gallery.destinations_dic_list:
-            destinations.append(ft.NavigationRailDestination(icon=destination['icon'], selected_icon=destination['selected_icon'], label=destination['label']))
+        for destination in gallery.destinations_list:
+            destinations.append(ft.NavigationRailDestination(icon=destination.icon, selected_icon=destination.selected_icon, label=destination.label))
         return destinations
     
     rail = ft.NavigationRail(
