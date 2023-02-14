@@ -19,7 +19,10 @@ class ExampleItem():
         self.example = None
         self.source_code = None
 
-def main(page: ft.Page):
+class GalleryData():
+    def __init__(self):
+        self.import_modules()
+
 
     destinations_dic_list = [
         {'name':'layout', 'label':'Layout', 'icon':ft.icons.GRID_VIEW, 'selected_icon':ft.icons.GRID_VIEW_SHARP, 'grid_items':[]}, 
@@ -33,64 +36,23 @@ def main(page: ft.Page):
         {'name':'utility', 'label':'Utility', 'icon':ft.icons.PAN_TOOL_OUTLINED, 'selected_icon':ft.icons.PAN_TOOL_SHARP, 'grid_items':[]}
     ]
     
-
-
-    def grid_item_clicked(e):
-        grid.visible = False
-        examples.visible = True
-        listview.controls = []
-        control_name.value = e.control.data.name
-        control_description.value = e.control.data.description
-        print(e.control.data.examples)
-        for example in e.control.data.examples:
-            listview.controls.append(ft.Column(controls = [
-            ft.Text(example.name, style=ft.TextThemeStyle.HEADLINE_SMALL), 
-            ft.Row(controls = [
-                example.example(), 
-                ft.VerticalDivider(width=1), 
-                ft.Text(example.source_code)]), 
-                ]
-            )
-        )
-                
-        page.update()
-
-    def control_group_selected(e):
-        grid.visible = True
-        examples.visible = False
-        grid.controls = []
-        for grid_item in destinations_dic_list[e.control.selected_index]['grid_items']:
-            grid.controls.append(ft.Container(
-                on_click=grid_item_clicked,
-                data=grid_item, 
-                bgcolor=ft.colors.SURFACE_VARIANT,
-                content=ft.Column(
-                    alignment=ft.MainAxisAlignment.SPACE_EVENLY,
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    controls=[
-                        ft.Image(src=grid_item.image_file_name, width=40), 
-                        ft.Text(value=grid_item.name, style=ft.TextThemeStyle.TITLE_SMALL)]
-                    )
-                ))
-        page.update()
-
-    def list_control_dirs(dir):
+    def list_control_dirs(self, dir):
         file_path = os.path.join(str(Path(__file__).parent), dir)
         control_dirs = [f for f in os.listdir(file_path) if not isfile(f) and f not in ['index.py','images', '__pycache__', '.venv', '.git']]
         return control_dirs
 
-    def list_example_files(control_group_dir, control_dir):
+    def list_example_files(self, control_group_dir, control_dir):
         file_path = os.path.join(str(Path(__file__).parent), control_group_dir, control_dir)
         example_files = [f for f in os.listdir(file_path) if f not in ['__pycache__']]
         return example_files
 
-    def import_modules():
-        for control_group_dir in destinations_dic_list:
-            for control_dir in list_control_dirs(control_group_dir['name']):
+    def import_modules(self):
+        for control_group_dir in self.destinations_dic_list:
+            for control_dir in self.list_control_dirs(control_group_dir['name']):
                 
                 grid_item = GridItem(control_dir)
                 
-                for file in list_example_files(control_group_dir['name'], control_dir):
+                for file in self.list_example_files(control_group_dir['name'], control_dir):
                     file_name = os.path.join(control_group_dir['name'], control_dir, file)
                     module_name = file_name.replace("/", ".").replace(".py", "")
                     
@@ -119,11 +81,53 @@ def main(page: ft.Page):
                             grid_item.examples.append(example_item)
                 control_group_dir['grid_items'].append(grid_item)
 
-    import_modules()
+
+gallery = GalleryData()
+
+def main(page: ft.Page):    
+
+    def grid_item_clicked(e):
+        grid.visible = False
+        examples.visible = True
+        listview.controls = []
+        control_name.value = e.control.data.name
+        control_description.value = e.control.data.description
+        print(e.control.data.examples)
+        for example in e.control.data.examples:
+            listview.controls.append(ft.Column(controls = [
+            ft.Text(example.name, style=ft.TextThemeStyle.HEADLINE_SMALL), 
+            ft.Row(controls = [
+                example.example(), 
+                ft.VerticalDivider(width=1), 
+                ft.Text(example.source_code)]), 
+                ]
+            )
+        )
+                
+        page.update()
+
+    def control_group_selected(e):
+        grid.visible = True
+        examples.visible = False
+        grid.controls = []
+        for grid_item in gallery.destinations_dic_list[e.control.selected_index]['grid_items']:
+            grid.controls.append(ft.Container(
+                on_click=grid_item_clicked,
+                data=grid_item, 
+                bgcolor=ft.colors.SURFACE_VARIANT,
+                content=ft.Column(
+                    alignment=ft.MainAxisAlignment.SPACE_EVENLY,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=[
+                        ft.Image(src=grid_item.image_file_name, width=40), 
+                        ft.Text(value=grid_item.name, style=ft.TextThemeStyle.TITLE_SMALL)]
+                    )
+                ))
+        page.update()
     
     def get_destinations():
         destinations = []
-        for destination in destinations_dic_list:
+        for destination in gallery.destinations_dic_list:
             destinations.append(ft.NavigationRailDestination(icon=destination['icon'], selected_icon=destination['selected_icon'], label=destination['label']))
         return destinations
     
@@ -175,5 +179,6 @@ def main(page: ft.Page):
         )
     )
 
+# load everything
 
-ft.app(target=main, assets_dir="images")
+ft.app(target=main, assets_dir="images", view=ft.WEB_BROWSER)
