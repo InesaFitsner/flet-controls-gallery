@@ -69,8 +69,6 @@ class GalleryData():
                         print(f"{module_name!r} already in sys.modules")
                     else:
                         file_path = os.path.join(str(Path(__file__).parent), file_name)
-                        # with open(file=file_path) as file_to_read:
-                        #     grid_item.source_code = file_to_read.read()
                         spec = importlib.util.spec_from_file_location(module_name, file_path)
                         module = importlib.util.module_from_spec(spec)
                         sys.modules[module_name] = module
@@ -106,9 +104,9 @@ def main(page: ft.Page):
             listview.controls.append(ft.Column(controls = [
             ft.Text(example.name, style=ft.TextThemeStyle.HEADLINE_SMALL), 
             ft.Row(controls = [
-                example.example(), 
+                ft.Container(content=example.example(), expand=1), 
                 ft.VerticalDivider(width=1), 
-                ft.Text(example.source_code)]), 
+                ft.Text(example.source_code, expand=1)]), 
                 ]
             )
         )
