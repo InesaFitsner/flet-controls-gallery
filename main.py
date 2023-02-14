@@ -105,8 +105,8 @@ def main(page: ft.Page):
             ft.Text(example.name, style=ft.TextThemeStyle.HEADLINE_SMALL), 
             ft.Row(controls = [
                 ft.Container(content=example.example(), expand=1), 
-                ft.VerticalDivider(width=1), 
-                ft.Text(example.source_code, expand=1)]), 
+                #ft.VerticalDivider(width=1), 
+                ft.Container(content=ft.Text(value=example.source_code, height=200), expand=1)]), 
                 ]
             )
         )
