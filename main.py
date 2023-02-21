@@ -60,13 +60,19 @@ class GalleryData():
         
         def format_code(code_text, example_name):
             new_str = code_text.split("def example():")
-            print(new_str[1])
+            #print(new_str[1])
+            middle_code = new_str[1].replace("return ", "page.add(")
             start_code = f"""import flet as ft
 
 def main(page: ft.Page):
     page.title = "{example_name}"            
 """
-            new_code = join(start_code, new_str[1])
+
+            end_code = f"""
+    )
+ft.app(target=main)            
+"""
+            new_code = join(start_code, middle_code, end_code)
             return new_code
 
         for control_group_dir in self.destinations_list:
@@ -110,7 +116,7 @@ def main(page: ft.Page):
         #page.dialog = dlg
         dlg.open = True
         dlg.title = ft.Text(e.control.data.name)
-        dlg.content = ft.Text(e.control.data.source_code)
+        dlg.content = ft.ListView(width=400, controls=[ft.Markdown(e.control.data.source_code)])
         page.update()   
 
     def grid_item_clicked(e):

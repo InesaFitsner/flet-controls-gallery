@@ -10,12 +10,14 @@ def example():
         bgcolor=ft.colors.BLUE_GREY_100,
         width=100,
         height=100)
+
     container_2 = ft.Container(
         content=ft.Text("Top left"), 
         alignment=ft.alignment.top_left, 
         bgcolor=ft.colors.BLUE_GREY_200,
         width=100,
         height=100)
+
     container_3 = ft.Container(
         content=ft.Text("-0.5, -0.5"), 
         alignment=ft.alignment.Alignment(-0.5, -0.5), 
@@ -27,5 +29,5 @@ def example():
         container_1,
         container_2,
         container_3
-    ]
-)
+        ]
+    )
