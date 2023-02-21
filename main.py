@@ -55,10 +55,20 @@ class GalleryData():
         example_files = [f for f in os.listdir(file_path) if f not in ['__pycache__']]
         return example_files
 
-    def format_code(code_text):
-        return code_text
 
     def import_modules(self):
+        
+        def format_code(code_text, example_name):
+            new_str = code_text.split("def example():")
+            print(new_str[1])
+            start_code = f"""import flet as ft
+
+def main(page: ft.Page):
+    page.title = "{example_name}"            
+"""
+            new_code = join(start_code, new_str[1])
+            return new_code
+
         for control_group_dir in self.destinations_list:
             for control_dir in self.list_control_dirs(control_group_dir.name):
                 
@@ -84,9 +94,8 @@ class GalleryData():
                         else:
                             example_item = ExampleItem() 
                             with open(file=file_path) as file_to_read:
-                                code_text = file_to_read.read()
+                                code_text = format_code(file_to_read.read(), module.name)
                                 example_item.source_code = code_text
-                                print(example_item.source_code)
                             example_item.example = module.example
                             example_item.name = module.name
                             grid_item.examples.append(example_item)
@@ -98,7 +107,7 @@ gallery = GalleryData()
 def main(page: ft.Page):
 
     def show_code(e):
-        page.dialog = dlg
+        #page.dialog = dlg
         dlg.open = True
         dlg.title = ft.Text(e.control.data.name)
         dlg.content = ft.Text(e.control.data.source_code)
@@ -190,6 +199,8 @@ def main(page: ft.Page):
     dlg = ft.AlertDialog(
         title=ft.Text("Example"), on_dismiss=lambda e: print("Dialog dismissed!")
     )
+
+    page.dialog = dlg
 
     page.add(
         ft.Row(
