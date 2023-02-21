@@ -55,6 +55,9 @@ class GalleryData():
         example_files = [f for f in os.listdir(file_path) if f not in ['__pycache__']]
         return example_files
 
+    def format_code(code_text):
+        return code_text
+
     def import_modules(self):
         for control_group_dir in self.destinations_list:
             for control_dir in self.list_control_dirs(control_group_dir.name):
@@ -81,7 +84,8 @@ class GalleryData():
                         else:
                             example_item = ExampleItem() 
                             with open(file=file_path) as file_to_read:
-                                example_item.source_code = file_to_read.read()
+                                code_text = file_to_read.read()
+                                example_item.source_code = code_text
                                 print(example_item.source_code)
                             example_item.example = module.example
                             example_item.name = module.name
@@ -91,7 +95,14 @@ class GalleryData():
 
 gallery = GalleryData()
 
-def main(page: ft.Page):    
+def main(page: ft.Page):
+
+    def show_code(e):
+        page.dialog = dlg
+        dlg.open = True
+        dlg.title = ft.Text(e.control.data.name)
+        dlg.content = ft.Text(e.control.data.source_code)
+        page.update()   
 
     def grid_item_clicked(e):
         grid.visible = False
@@ -99,14 +110,17 @@ def main(page: ft.Page):
         listview.controls = []
         control_name.value = e.control.data.name
         control_description.value = e.control.data.description
-        print(e.control.data.examples)
+        #print(e.control.data.examples)
         for example in e.control.data.examples:
             listview.controls.append(ft.Column(controls = [
-            ft.Text(example.name, style=ft.TextThemeStyle.HEADLINE_SMALL), 
+            ft.Row(alignment=ft.MainAxisAlignment.SPACE_BETWEEN, controls = [
+                ft.Text(example.name, style=ft.TextThemeStyle.HEADLINE_SMALL), 
+                ft.IconButton(icon=ft.icons.CODE, on_click=show_code, data=example)]), 
             ft.Row(controls = [
                 ft.Container(content=example.example(), expand=1), 
                 #ft.VerticalDivider(width=1), 
-                ft.Container(content=ft.Text(value=example.source_code, height=200), expand=1)]), 
+                #ft.Container(content=ft.Text(value=example.source_code, height=200), expand=1)
+                ]), 
                 ]
             )
         )
@@ -173,6 +187,9 @@ def main(page: ft.Page):
         bgcolor=ft.colors.SURFACE_VARIANT,
     )
     
+    dlg = ft.AlertDialog(
+        title=ft.Text("Example"), on_dismiss=lambda e: print("Dialog dismissed!")
+    )
 
     page.add(
         ft.Row(
