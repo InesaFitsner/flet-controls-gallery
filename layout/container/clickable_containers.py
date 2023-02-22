@@ -51,5 +51,4 @@ def example():
                     on_click=lambda e: print("Clickable transparent with Ink clicked!"),
                 ),
             ],
-            alignment=ft.MainAxisAlignment.CENTER,
         )

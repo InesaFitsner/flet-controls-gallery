@@ -116,7 +116,7 @@ def main(page: ft.Page):
         #page.dialog = dlg
         dlg.open = True
         dlg.title = ft.Text(e.control.data.name)
-        dlg.content = ft.ListView(width=400, controls=[ft.Markdown(e.control.data.source_code)])
+        dlg.content = ft.ListView(width=400, controls=[ft.Text(e.control.data.source_code)])
         page.update()   
 
     def grid_item_clicked(e):

@@ -1,3 +1,3 @@
 name = "Column"
 image_file = "column.svg"
-description = "Column is..."
+description = "A control that displays its children in a vertical array."
