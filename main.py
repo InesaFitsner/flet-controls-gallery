@@ -125,16 +125,13 @@ def main(page: ft.Page):
         listview.controls = []
         control_name.value = e.control.data.name
         control_description.value = e.control.data.description
-        #print(e.control.data.examples)
         for example in e.control.data.examples:
             listview.controls.append(ft.Column(controls = [
             ft.Row(alignment=ft.MainAxisAlignment.SPACE_BETWEEN, controls = [
                 ft.Text(example.name, style=ft.TextThemeStyle.HEADLINE_SMALL), 
                 ft.IconButton(icon=ft.icons.CODE, on_click=show_code, data=example)]), 
             ft.Row(controls = [
-                ft.Container(content=example.example(), expand=1), 
-                #ft.VerticalDivider(width=1), 
-                #ft.Container(content=ft.Text(value=example.source_code, height=200), expand=1)
+                ft.Container(content=example.example()), 
                 ]), 
                 ]
             )
@@ -219,7 +216,5 @@ def main(page: ft.Page):
             expand=True,
         )
     )
-
-# load everything
 
 ft.app(target=main, assets_dir="images", view=ft.WEB_BROWSER)
