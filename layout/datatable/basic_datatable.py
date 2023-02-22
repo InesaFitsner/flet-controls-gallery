@@ -1,6 +1,6 @@
 import flet as ft
 
-name = "A simple datatable"
+name = "A simple DataTable"
 
 def example():
 

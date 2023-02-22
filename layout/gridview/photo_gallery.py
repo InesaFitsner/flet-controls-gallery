@@ -5,7 +5,6 @@ name = "GridView Example"
 def example():
     
     images = ft.GridView(
-        #expand=1,
         height=400,
         width=400,
         runs_count=5,
