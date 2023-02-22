@@ -72,7 +72,7 @@ def main(page: ft.Page):
     )
 ft.app(target=main)            
 """
-            new_code = join(start_code, middle_code, end_code)
+            new_code = "```\n" + start_code + middle_code + end_code + "```"
             return new_code
 
         for control_group_dir in self.destinations_list:
