@@ -1,3 +1,3 @@
 name = "Row"
-description = "Row allows to decorate a control with background color and border and position it with padding, margin and alignment."
+description = "A control that displays its children in a horizontal array."
 image_file = "row.svg"
