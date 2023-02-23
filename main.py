@@ -19,9 +19,14 @@ def main(page: ft.Page):
         control_description.value = e.control.data.description
         for example in e.control.data.examples:
             listview.controls.append(ft.Column(controls = [
-            ft.Row(alignment=ft.MainAxisAlignment.SPACE_BETWEEN, controls = [
-                ft.Text(example.name, style=ft.TextThemeStyle.HEADLINE_SMALL), 
-                ft.IconButton(icon=ft.icons.CODE, on_click=show_code, data=example)]), 
+            ft.Container(content=ft.Row(alignment=ft.MainAxisAlignment.SPACE_BETWEEN, controls = [
+                ft.Text(example.name, style=ft.TextThemeStyle.TITLE_MEDIUM, weight=ft.FontWeight.W_500), 
+                ft.IconButton(icon=ft.icons.CODE, on_click=show_code, data=example)
+                ]),
+                bgcolor=ft.colors.SURFACE_VARIANT,
+                padding=5,
+                border_radius=5
+                ),
             ft.Row(controls = [
                 ft.Container(content=example.example()), 
                 ]), 
@@ -76,7 +81,7 @@ def main(page: ft.Page):
     )
 
     control_name = ft.Text(style=ft.TextThemeStyle.HEADLINE_MEDIUM)
-    control_description = ft.Text(style=ft.TextThemeStyle.BODY_SMALL)
+    control_description = ft.Text(style=ft.TextThemeStyle.BODY_MEDIUM)
     listview = ft.ListView(expand=True, spacing=10, padding=20, auto_scroll=False)
 
     examples = ft.Column(visible=False, expand=True, controls=[
