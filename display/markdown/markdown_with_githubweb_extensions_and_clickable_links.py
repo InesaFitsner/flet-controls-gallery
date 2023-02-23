@@ -82,5 +82,5 @@ void main() {
             value=md1,
             selectable=True,
             extension_set=ft.MarkdownExtensionSet.GITHUB_WEB,
-            on_tap_link=lambda e: ft.page.launch_url(e.data),
+            #ßon_tap_link=lambda e: ft.page.launch_url(e.data),
         )

@@ -114,5 +114,5 @@ Coming soon.
             extension_set="gitHubWeb",
             code_theme="atom-one-dark",
             code_style=ft.TextStyle(font_family="Roboto Mono"),
-            on_tap_link=lambda e: ft.page.launch_url(e.data),
+            #on_tap_link=lambda e: ft.page.launch_url(e.data),
         )
