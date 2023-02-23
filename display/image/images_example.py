@@ -7,9 +7,9 @@ def example():
         src="logo.svg",
         width=100,
         height=100,
-        #fit=ft.ImageFit.CONTAIN,
+        fit=ft.ImageFit.CONTAIN,
     )
-    images = ft.Row(expand=1, wrap=False, scroll="always")
+    images = ft.Row(width=600, wrap=False, scroll="always")
 
     for i in range(0, 30):
         images.controls.append(
@@ -23,8 +23,10 @@ def example():
             )
         )
     
-    return ft.Column(width=400,
-        height=400, controls=[
+    return ft.Column(
+        #width=400,
+        #height=400, 
+        controls=[
         img,
         images,
         

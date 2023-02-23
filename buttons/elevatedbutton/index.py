@@ -1,3 +1,3 @@
-name = "Card"
-description = """A material design card: a panel with slightly rounded corners and an elevation shadow."""
-image_file = "card.svg"
+name = "ElevatedButton"
+description = """Elevated buttons are essentially filled tonal buttons with a shadow. To prevent shadow creep, only use them when absolutely necessary, such as when the button requires visual separation from a patterned background."""
+image_file = "elevatedbutton.svg"

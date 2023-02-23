@@ -1,3 +1,3 @@
-name = "Card"
-description = """A material design card: a panel with slightly rounded corners and an elevation shadow."""
-image_file = "card.svg"
+name = "FilledButton"
+description = """Filled buttons have the most visual impact after the FloatingActionButton, and should be used for important, final actions that complete a flow, like Save, Join now, or Confirm."""
+image_file = "filledbutton.svg"

@@ -1,3 +1,3 @@
-name = "Card"
-description = """A material design card: a panel with slightly rounded corners and an elevation shadow."""
-image_file = "card.svg"
+name = "PopupMenuButton"
+description = """An icon button which displays a menu when clicked."""
+image_file = "popupmenubutton.svg"

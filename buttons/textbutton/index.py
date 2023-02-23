@@ -1,3 +1,3 @@
-name = "Card"
-description = """A material design card: a panel with slightly rounded corners and an elevation shadow."""
-image_file = "card.svg"
+name = "TextButton"
+description = """Text buttons are used for the lowest priority actions, especially when presenting multiple options. Text buttons can be placed on a variety of backgrounds. Until the button is interacted with, its container isn’t visible."""
+image_file = "textbutton.svg"

@@ -4,11 +4,25 @@ from gallerydata import GalleryData
 gallery = GalleryData()
 
 def main(page: ft.Page):
+    
+    ft.page.fonts = {
+        "Roboto Mono": "RobotoMono-VariableFont_wght.ttf",
+    }
 
     def show_code(e):
         dlg.open = True
-        dlg.title = ft.Text(e.control.data.name)
-        dlg.content = ft.ListView(width=400, controls=[ft.Text(e.control.data.source_code)])
+        code_example_name.value = e.control.data.name
+        code_markdown = ft.Markdown(
+            e.control.data.source_code,
+            selectable=True,
+            extension_set="gitHubWeb",
+            code_theme="atom-one-dark",
+            code_style=ft.TextStyle(font_family="Roboto Mono"),
+            #on_tap_link=lambda e: ft.page.launch_url(e.data),
+        )
+        #dlg.content = ft.ListView(width=500, controls=[code_markdown])
+        
+        dlg.content = ft.Column(controls=[code_markdown], scroll="always")
         page.update()   
 
     def grid_item_clicked(e):
@@ -23,7 +37,7 @@ def main(page: ft.Page):
                 ft.Text(example.name, style=ft.TextThemeStyle.TITLE_MEDIUM, weight=ft.FontWeight.W_500), 
                 ft.IconButton(icon=ft.icons.CODE, on_click=show_code, data=example)
                 ]),
-                bgcolor=ft.colors.SURFACE_VARIANT,
+                bgcolor=ft.colors.SECONDARY_CONTAINER,
                 padding=5,
                 border_radius=5
                 ),
@@ -44,7 +58,7 @@ def main(page: ft.Page):
             grid.controls.append(ft.Container(
                 on_click=grid_item_clicked,
                 data=grid_item, 
-                bgcolor=ft.colors.SURFACE_VARIANT,
+                bgcolor=ft.colors.SECONDARY_CONTAINER,
                 content=ft.Column(
                     alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -91,13 +105,26 @@ def main(page: ft.Page):
     page.appbar = ft.AppBar(
         leading=ft.Image(src=f"logo.svg"),
         leading_width=40,
-        title=ft.Text("Flet Controls Gallery"),
+        title=ft.Text("Flet Controls Gallery", color=ft.colors.WHITE),
         center_title=True,
-        bgcolor=ft.colors.SURFACE_VARIANT,
+        bgcolor=ft.colors.SECONDARY,
     )
     
+    #source code dialog
+    
+    def close_dlg(e):
+        dlg.open = False
+        page.update()
+    
+    code_example_name = ft.Text("Example")
+
     dlg = ft.AlertDialog(
-        title=ft.Text("Example"), on_dismiss=lambda e: print("Dialog dismissed!")
+        title=code_example_name,
+        actions=[
+            ft.FilledButton("Copy to clipboard", on_click=close_dlg),
+            ft.TextButton("Close", on_click=close_dlg),
+        ],
+        actions_alignment=ft.MainAxisAlignment.END,
     )
 
     page.dialog = dlg

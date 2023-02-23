@@ -12,19 +12,23 @@ Markdown allows you to easily include formatted text, images, and even formatted
 
 Setext-style
 
+```
 This is an H1
 =============
 
 This is an H2
 -------------
+```
 
 Atx-style
 
+```
 # This is an H1
 
 ## This is an H2
 
 ###### This is an H6
+```
 
 Select the valid headers:
 
@@ -33,11 +37,17 @@ Select the valid headers:
 
 ## Links
 
+[Google's Homepage][Google]
+
+```
 [inline-style](https://www.google.com)
+
+[reference-style][Google]
+```
 
 ## Images
 
-![Image from Flet assets](/icons/icon-192.png)
+![Flutter logo](/icons/icon-192.png)
 
 ![Test image](https://picsum.photos/200/300)
 
@@ -56,7 +66,6 @@ Select the valid headers:
 |`~~***italic bold strikethrough 2***~~`|~~***italic bold strikethrough 2***~~|
 
 ## Styling
-
 Style text as _italic_, __bold__, ~~strikethrough~~, or `inline code`.
 
 - Use bulleted lists
@@ -64,18 +73,52 @@ Style text as _italic_, __bold__, ~~strikethrough~~, or `inline code`.
 - Your points
 
 ## Code blocks
-
 Formatted Dart code looks really pretty too:
 
-```
+```dart
 void main() {
   runApp(MaterialApp(
     home: Scaffold(
-      body: ft.Markdown(data: markdownData),
+      body: Markdown(data: markdownData),
     ),
   ));
 }
 ```
+
+## Center Title
+
+###### ※ ※ ※
+
+_* How to implement it see main.dart#L129 in example._
+
+## Custom Syntax
+
+NaOH + Al_2O_3 = NaAlO_2 + H_2O
+
+C_4H_10 = C_2H_6 + C_2H_4
+
+## Markdown widget
+
+This is an example of how to create your own Markdown widget:
+
+    Markdown(data: 'Hello _world_!');
+
+Enjoy!
+
+[Google]: https://www.google.com/
+
+## Line Breaks
+
+This is an example of how to create line breaks (tab or two whitespaces):
+
+line 1
+  
+   
+line 2
+  
+  
+  
+line 3
 """
     
     return ft.Markdown(
