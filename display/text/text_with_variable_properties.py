@@ -23,6 +23,7 @@ def example():
         t.update()
 
     def style_changed(e):
+        t.size = None
         t.style = e.control.value
         print(t.style)
         t.update()
