@@ -4,22 +4,32 @@ name = "FloatingActionButton example"
 
 def example():
 
+    class Example(ft.Container):
+        def __init__(self):
+            super().__init__()
+            self.content = ft.Column()
 
-    def show_example_clicked(e):
-        e.control.page.floating_action_button = ft.FloatingActionButton(
-        icon=ft.icons.ADD, on_click=fab_pressed, bgcolor=ft.colors.LIME_300, data=0
-    )
-        e.control.page.update()
+        # happens when example is added to the page (when user chooses the FloatingActionButton control from the grid)
+        def did_mount(self):
+            self.page.floating_action_button = ft.FloatingActionButton(
+        icon=ft.icons.ADD, bgcolor=ft.colors.LIME_300, data=0, on_click=fab_pressed
+        )
+            self.page.update()
+        
+        # happens when example is removed from the page (when user chooses different control group on the navigation rail)
+        def will_unmount(self):
+            self.page.floating_action_button = None
+            self.page.update()
 
    
     def fab_pressed(e):
-        tiles.controls.append(ft.ListTile(title=ft.Text(f"Tile {e.control.data}")))
+        fab_example.content.controls.append(ft.ListTile(title=ft.Text(f"Tile {e.control.data}")))
         e.control.page.show_snack_bar(
             ft.SnackBar(ft.Text("Tile was added successfully!"), open=True)
         )
         e.control.data += 1
-        tiles.update()
+        fab_example.update()
 
-    tiles = ft.Column()
+    fab_example = Example()
     
-    return ft.Text("This example is under construction")
+    return fab_example

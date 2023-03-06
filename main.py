@@ -54,6 +54,7 @@ def main(page: ft.Page):
         grid.visible = True
         examples.visible = False
         grid.controls = []
+        listview.controls = []
         for grid_item in gallery.destinations_list[e.control.selected_index].grid_items:
             grid.controls.append(ft.Container(
                 on_click=grid_item_clicked,
