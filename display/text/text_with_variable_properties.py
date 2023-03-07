@@ -11,7 +11,18 @@ def example():
         return options
 
     def get_source_code():
-        code = f"""text_control = ft.Text(value="{t.value}", italic={t.italic}, selectable={t.selectable}, style="{t.style}", size={t.size})"""
+        
+        if t.size == "":
+            size = ""
+        else:
+            size = f"size={t.size}"       
+        
+        if t.style == None:
+            style = ""
+        else:
+            style = f"""style='{t.style}',"""   
+        
+        code = f"""text_control = ft.Text(value="{t.value}", italic={t.italic}, selectable={t.selectable}, {style} {size})"""
         return code
 
     def update_example():
