@@ -11,33 +11,36 @@ def example():
         return options
 
     def get_source_code():
-        return "Source code under construction"
+        code = f"""text_control = ft.Text(value="{t.value}", italic={t.italic}, selectable={t.selectable}, style="{t.style}", size={t.size})"""
+        return code
+
+    def update_example():
+        source_code.value = get_source_code()
+        example_control.update()
 
     def value_changed(e):
         t.value = e.control.value
-        t.update()
+        update_example()
     
     def italic_changed(e):
         t.italic = e.control.value
-        t.update()
+        update_example()
 
     def selectable_changed(e):
         t.selectable = e.control.value
-        t.update()
+        update_example()
 
     def size_changed(e):
         t.size = e.control.value
         t.style = None
         style_dropdown.value = None
-        style_dropdown.update()
-        t.update()
+        update_example()
 
     def style_changed(e):
         t.size = None
         size_dropdown.value = None
         t.style = e.control.value
-        size_dropdown.update()
-        t.update()
+        update_example()
 
     t = ft.Text(value="This is a sample text", size=12)
 
@@ -101,15 +104,15 @@ def example():
             ],
         )
     
-    source_code = ft.Column(controls=[
-        ft.Text("Source code:", weight=ft.FontWeight.BOLD),
-        ft.Text(value=get_source_code(), bgcolor=ft.colors.SECONDARY, color=ft.colors.WHITE)
-    ])
-    
-    return ft.Column(controls=[
+    source_code = ft.Text(value=get_source_code(), selectable=True)
+
+    example_control = ft.Column(controls=[
             t,
             properties,
+            ft.Text("Source code:", weight=ft.FontWeight.BOLD),
             source_code
         ])
 
+    
+    return example_control
     
