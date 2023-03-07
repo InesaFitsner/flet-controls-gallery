@@ -106,9 +106,9 @@ def main(page: ft.Page):
     page.appbar = ft.AppBar(
         leading=ft.Image(src=f"logo.svg"),
         leading_width=40,
-        title=ft.Text("Flet Controls Gallery", color=ft.colors.WHITE),
+        title=ft.Text("Flet Controls Gallery"),
         center_title=True,
-        bgcolor=ft.colors.SECONDARY,
+        bgcolor=ft.colors.INVERSE_PRIMARY,
     )
     
     #source code dialog
@@ -129,6 +129,9 @@ def main(page: ft.Page):
     )
 
     page.dialog = dlg
+
+
+    page.theme_mode = ft.ThemeMode.LIGHT
 
     page.add(
         ft.Row(
