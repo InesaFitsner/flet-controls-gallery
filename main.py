@@ -7,13 +7,14 @@ def main(page: ft.Page):
     
     def route_change(e):
         print("Route:", page.route)
-        x = page.route.split("/")
-        if len(x) == 1:
+        route_list = [item for item in page.route.split("/") if item !=""]
+        print(route_list)
+        if len(route_list) == 0:
             print("Root")
-        elif len(x) == 2:
-            print("Control group")
-        elif len(x) == 3:
-            display_control_examples(x[-1])
+        elif len(route_list) == 1:
+            display_control_group(route_list[0])
+        elif len(route_list) == 2:
+            display_control_examples(route_list[0], route_list[1])
         else:
             print("Invalid route")
         
@@ -38,11 +39,68 @@ def main(page: ft.Page):
         dlg.content = ft.Column(controls=[code_markdown], scroll="always")
         page.update()   
 
-    def display_control_examples(control):
-        print(f"Display control examples for {control}")
+    def find_control_group_object(control_group_name):
+        for control_group in gallery.destinations_list:
+            if control_group.name == control_group_name:
+                return control_group
+
+    def find_grid_object(control_group_name, control_id):
+        control_group = find_control_group_object(control_group_name)
+        for grid_item in control_group.grid_items:
+            if grid_item.id == control_id:
+                return grid_item
+
+    def display_control_examples(control_group_name, control_id):
+        grid_item = find_grid_object(control_group_name, control_id)
+        print(f"Display control examples for {grid_item.name}")
+        grid.visible = False
+        examples.visible = True
+        listview.controls = []
+        control_name.value = grid_item.name
+        control_description.value = grid_item.description
+
+        for example in grid_item.examples:
+            listview.controls.append(ft.Column(controls = [
+            ft.Container(content=ft.Row(alignment=ft.MainAxisAlignment.SPACE_BETWEEN, controls = [
+                ft.Text(example.name, style=ft.TextThemeStyle.TITLE_MEDIUM, weight=ft.FontWeight.W_500), 
+                ft.IconButton(icon=ft.icons.CODE, on_click=show_code, data=example)
+                ]),
+                bgcolor=ft.colors.SECONDARY_CONTAINER,
+                padding=5,
+                border_radius=5
+                ),
+            ft.Row(controls = [
+                ft.Container(content=example.example()), 
+                ]), 
+                ]
+            )
+        )
+                
+        page.update()
+
+    def display_control_group(control_group_name):
+        control_group = find_control_group_object(control_group_name)
+        grid.visible = True
+        examples.visible = False
+        grid.controls = []
+        listview.controls = []
+        for grid_item in control_group.grid_items:
+            grid.controls.append(ft.Container(
+                on_click=grid_item_clicked,
+                data=grid_item, 
+                bgcolor=ft.colors.SECONDARY_CONTAINER,
+                content=ft.Column(
+                    alignment=ft.MainAxisAlignment.SPACE_EVENLY,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=[
+                        ft.Image(src=grid_item.image_file_name, width=40), 
+                        ft.Text(value=grid_item.name, style=ft.TextThemeStyle.TITLE_SMALL)]
+                    )
+                ))
+        page.update()
 
     def grid_item_clicked(e):
-        page.route = f"{page.route}/{e.control.data.id}"
+        page.go(f"{page.route}/{e.control.data.id}")
         grid.visible = False
         examples.visible = True
         listview.controls = []
@@ -68,7 +126,7 @@ def main(page: ft.Page):
         page.update()
 
     def control_group_selected(e):
-        page.route = f"/{gallery.destinations_list[e.control.selected_index].name}"
+        page.go(f"/{gallery.destinations_list[e.control.selected_index].name}")
         grid.visible = True
         examples.visible = False
         grid.controls = []
@@ -163,5 +221,7 @@ def main(page: ft.Page):
     )
 
     page.on_route_change = route_change
+    print(f"Initial route: {page.route}")
+    page.go(page.route)
 
 ft.app(target=main, assets_dir="images", view=ft.WEB_BROWSER)
