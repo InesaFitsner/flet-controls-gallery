@@ -29,7 +29,7 @@ def main(page: ft.Page):
         page.update()   
 
     def grid_item_clicked(e):
-        page.route = f"/{e.control.data.id}"
+        page.route = f"{page.route}/{e.control.data.id}"
         grid.visible = False
         examples.visible = True
         listview.controls = []
@@ -134,7 +134,6 @@ def main(page: ft.Page):
     )
 
     page.dialog = dlg
-
 
     page.theme_mode = ft.ThemeMode.LIGHT
 
