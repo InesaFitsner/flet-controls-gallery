@@ -5,6 +5,9 @@ gallery = GalleryData()
 
 def main(page: ft.Page):
     
+    def route_change(e):
+        print("Route:", page.route)
+    
     ft.page.fonts = {
         "Roboto Mono": "RobotoMono-VariableFont_wght.ttf",
     }
@@ -26,6 +29,7 @@ def main(page: ft.Page):
         page.update()   
 
     def grid_item_clicked(e):
+        page.route = f"/{e.control.data.id}"
         grid.visible = False
         examples.visible = True
         listview.controls = []
@@ -51,6 +55,7 @@ def main(page: ft.Page):
         page.update()
 
     def control_group_selected(e):
+        page.route = f"/{gallery.destinations_list[e.control.selected_index].name}"
         grid.visible = True
         examples.visible = False
         grid.controls = []
@@ -144,5 +149,7 @@ def main(page: ft.Page):
             expand=True,
         )
     )
+
+    page.on_route_change = route_change
 
 ft.app(target=main, assets_dir="images", view=ft.WEB_BROWSER)
