@@ -7,6 +7,16 @@ def main(page: ft.Page):
     
     def route_change(e):
         print("Route:", page.route)
+        x = page.route.split("/")
+        if len(x) == 1:
+            print("Root")
+        elif len(x) == 2:
+            print("Control group")
+        elif len(x) == 3:
+            display_control_examples(x[-1])
+        else:
+            print("Invalid route")
+        
     
     ft.page.fonts = {
         "Roboto Mono": "RobotoMono-VariableFont_wght.ttf",
@@ -27,6 +37,9 @@ def main(page: ft.Page):
         
         dlg.content = ft.Column(controls=[code_markdown], scroll="always")
         page.update()   
+
+    def display_control_examples(control):
+        print(f"Display control examples for {control}")
 
     def grid_item_clicked(e):
         page.route = f"{page.route}/{e.control.data.id}"
