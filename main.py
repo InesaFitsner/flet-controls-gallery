@@ -159,8 +159,6 @@ def main(page: ft.Page):
         bgcolor=ft.colors.INVERSE_PRIMARY,
     )
     
-    #source code dialog
-    
     def close_dlg(e):
         dlg.open = False
         page.update()
