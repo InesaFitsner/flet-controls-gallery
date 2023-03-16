@@ -73,7 +73,8 @@ def main(page: ft.Page):
     )
 ft.app(target=main)            
 """
-            new_code = "\n```python\n" + start_code + middle_code + end_code + "\n```\n"
+            #new_code = "\n```python\n" + start_code + middle_code + end_code + "\n```\n"
+            new_code = start_code + middle_code + end_code
             return new_code
 
         for control_group_dir in self.destinations_list:

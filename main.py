@@ -77,11 +77,12 @@ def main(page: ft.Page):
                 on_click=grid_item_clicked,
                 data=grid_item, 
                 bgcolor=ft.colors.SECONDARY_CONTAINER,
+                border_radius=5,
                 content=ft.Column(
                     alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
-                        ft.Image(src=grid_item.image_file_name, width=40), 
+                        #ft.Image(src=grid_item.image_file_name, width=40), 
                         ft.Text(value=grid_item.name, style=ft.TextThemeStyle.TITLE_SMALL)]
                     )
                 ))
@@ -109,9 +110,10 @@ def main(page: ft.Page):
             code_style=ft.TextStyle(font_family="Roboto Mono"),
             #on_tap_link=lambda e: ft.page.launch_url(e.data),
         )
+        code_text = ft.Text(value=e.control.data.source_code, selectable=True)
         #dlg.content = ft.ListView(width=500, controls=[code_markdown])
         
-        dlg.content = ft.Column(controls=[code_markdown], scroll="always")
+        dlg.content = ft.Column(controls=[code_text], scroll="always")
         page.update() 
     
     def get_destinations():
