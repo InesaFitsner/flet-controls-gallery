@@ -4,15 +4,17 @@ from gallerydata import GalleryData
 gallery = GalleryData()
 
 def main(page: ft.Page):
+
+    ft.page.fonts = {
+        "Roboto Mono": "RobotoMono-VariableFont_wght.ttf",
+    }
     
     def get_route_list(route):
         route_list = [item for item in route.split("/") if item !=""]
         return route_list
 
     def route_change(e):
-        print("Route:", page.route)
         route_list = get_route_list(page.route)
-        print(route_list)
         if len(route_list) == 0:
             page.go("/layout")
         elif len(route_list) == 1:
@@ -21,12 +23,6 @@ def main(page: ft.Page):
             display_control_examples(route_list[0], route_list[1])
         else:
             print("Invalid route")
-        
-    
-    ft.page.fonts = {
-        "Roboto Mono": "RobotoMono-VariableFont_wght.ttf",
-    }
-
   
 
     def find_control_group_object(control_group_name):
@@ -124,16 +120,23 @@ def main(page: ft.Page):
             destinations.append(ft.NavigationRailDestination(icon=destination.icon, selected_icon=destination.selected_icon, label=destination.label))
         return destinations
     
-    rail = ft.NavigationRail(
-        extended=True,
-        selected_index=0,
-        min_width=100,
-        min_extended_width=200,
-        group_alignment=-0.9,
-        destinations=get_destinations(),
-        on_change=control_group_selected
+    rail = ft.Column(
+        controls=[
+            ft.NavigationRail(
+                extended=True,
+                expand=True,
+                selected_index=0,
+                min_width=100,
+                min_extended_width=200,
+                group_alignment=-0.9,
+                destinations=get_destinations(),
+                on_change=control_group_selected
+            ),
+            ft.Column(controls=[
+                ft.Switch(label="Light theme"),
+                ft.IconButton(icon=ft.icons.COLOR_LENS_OUTLINED)
+            ])]
     )
-
     grid = ft.GridView(
         expand=1,
         runs_count=5,
