@@ -131,11 +131,11 @@ def main(page: ft.Page):
 
     def seed_color_changed(e):
         page.theme = page.dark_theme = ft.theme.Theme(color_scheme_seed=e.control.data)
-        print(f"Seed color: {page.theme.color_scheme_seed}")
         page.update()
 
 
     dark_light_text = ft.Text("Light theme")
+    #page.theme.color_scheme_seed = "blue"
     
     rail = ft.Column(
         controls=[
@@ -157,15 +157,55 @@ def main(page: ft.Page):
                     ft.Row(controls=[
                         ft.PopupMenuButton(
                             icon=ft.icons.COLOR_LENS_OUTLINED,
-                                    items=[
-            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Purple", on_click=seed_color_changed, data="purple"),
-            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Indigo", on_click=seed_color_changed, data="indigo"),
-            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Blue (default)", on_click=seed_color_changed, data="blue"),
-            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Teal", on_click=seed_color_changed, data="teal"),
-            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Green", on_click=seed_color_changed, data="green"),
-            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Yellow", on_click=seed_color_changed, data="yellow"),
-            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Orange", on_click=seed_color_changed, data="orange"),
-            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Red", on_click=seed_color_changed, data="red"),
+                            items=[
+            ft.PopupMenuItem(
+                content=ft.Row(controls=[
+                                ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="deeppurple"),
+                                ft.Text("Deep Purple")],
+                            ),
+                on_click=seed_color_changed, data="deeppurple"),
+            ft.PopupMenuItem(
+                content=ft.Row(controls=[
+                                ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="indigo"),
+                                ft.Text("Indigo")],
+                            ),
+                on_click=seed_color_changed, data="indigo"),
+            ft.PopupMenuItem(
+                content=ft.Row(controls=[
+                                ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="blue"),
+                                ft.Text("Blue (default)")],
+                            ),
+                on_click=seed_color_changed, data="blue"),
+            ft.PopupMenuItem(
+                content=ft.Row(controls=[
+                                ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="teal"),
+                                ft.Text("Teal")],
+                            ),
+                on_click=seed_color_changed, data="teal"),
+            ft.PopupMenuItem(
+                content=ft.Row(controls=[
+                                ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="green"),
+                                ft.Text("Green")],
+                            ),
+                on_click=seed_color_changed, data="green"),
+            ft.PopupMenuItem(
+                content=ft.Row(controls=[
+                                ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="yellow"),
+                                ft.Text("Yellow")],
+                            ),
+                on_click=seed_color_changed, data="yellow"),
+            ft.PopupMenuItem(
+                content=ft.Row(controls=[
+                                ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="orange"),
+                                ft.Text("Orange")],
+                            ),
+                on_click=seed_color_changed, data="orange"),
+            ft.PopupMenuItem(
+                content=ft.Row(controls=[
+                                ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="pink"),
+                                ft.Text("Pink")],
+                            ),
+                on_click=seed_color_changed, data="pink"),
         ]),
                         ft.Text("Seed color")
                     ])
@@ -216,6 +256,7 @@ def main(page: ft.Page):
     page.dialog = dlg
 
     page.theme_mode = ft.ThemeMode.LIGHT
+
 
     page.add(
         ft.Row(
