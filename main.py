@@ -130,7 +130,7 @@ def main(page: ft.Page):
         page.update()
 
     def seed_color_changed(e):
-        page.theme=ft.theme.Theme(color_scheme_seed=e.control.data)
+        page.theme = page.dark_theme = ft.theme.Theme(color_scheme_seed=e.control.data)
         print(f"Seed color: {page.theme.color_scheme_seed}")
         page.update()
 
