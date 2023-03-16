@@ -129,6 +129,12 @@ def main(page: ft.Page):
             dark_light_text.value = "Light theme"
         page.update()
 
+    def seed_color_changed(e):
+        page.theme=ft.theme.Theme(color_scheme_seed=e.control.data)
+        print(f"Seed color: {page.theme.color_scheme_seed}")
+        page.update()
+
+
     dark_light_text = ft.Text("Light theme")
     
     rail = ft.Column(
@@ -149,11 +155,23 @@ def main(page: ft.Page):
                         ft.IconButton(icon=ft.icons.BRIGHTNESS_2_OUTLINED, tooltip="Toggle brightness", on_click=theme_changed),
                         dark_light_text]),
                     ft.Row(controls=[
-                        ft.PopupMenuButton(icon=ft.icons.COLOR_LENS_OUTLINED),
+                        ft.PopupMenuButton(
+                            icon=ft.icons.COLOR_LENS_OUTLINED,
+                                    items=[
+            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Purple", on_click=seed_color_changed, data="purple"),
+            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Indigo", on_click=seed_color_changed, data="indigo"),
+            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Blue (default)", on_click=seed_color_changed, data="blue"),
+            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Teal", on_click=seed_color_changed, data="teal"),
+            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Green", on_click=seed_color_changed, data="green"),
+            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Yellow", on_click=seed_color_changed, data="yellow"),
+            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Orange", on_click=seed_color_changed, data="orange"),
+            ft.PopupMenuItem(icon=ft.icons.COLOR_LENS_OUTLINED, text="Red", on_click=seed_color_changed, data="red"),
+        ]),
                         ft.Text("Seed color")
                     ])
                     
-                ])]
+                ])
+        ]
     )
     grid = ft.GridView(
         expand=1,
