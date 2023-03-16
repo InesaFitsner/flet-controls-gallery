@@ -1,5 +1,6 @@
 import flet as ft
 from gallerydata import GalleryData
+from popup_color_item import PopupColorItem
 
 gallery = GalleryData()
 
@@ -129,7 +130,6 @@ def main(page: ft.Page):
 
 
     dark_light_text = ft.Text("Light theme")
-    #page.theme.color_scheme_seed = "blue"
     
     rail = ft.Column(
         controls=[
@@ -152,12 +152,13 @@ def main(page: ft.Page):
                         ft.PopupMenuButton(
                             icon=ft.icons.COLOR_LENS_OUTLINED,
                             items=[
-            ft.PopupMenuItem(
-                content=ft.Row(controls=[
-                                ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="deeppurple"),
-                                ft.Text("Deep Purple")],
-                            ),
-                on_click=seed_color_changed, data="deeppurple"),
+            PopupColorItem(color="deeppurple", name="Deep purple"),
+            # ft.PopupMenuItem(
+            #     content=ft.Row(controls=[
+            #                     ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="deeppurple"),
+            #                     ft.Text("Deep Purple")],
+            #                 ),
+            #     on_click=seed_color_changed, data="deeppurple"),
             ft.PopupMenuItem(
                 content=ft.Row(controls=[
                                 ft.Icon(name=ft.icons.COLOR_LENS_OUTLINED, color="indigo"),
