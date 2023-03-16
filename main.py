@@ -102,18 +102,10 @@ def main(page: ft.Page):
     def show_code(e):
         dlg.open = True
         code_example_name.value = e.control.data.name
-        code_markdown = ft.Markdown(
-            e.control.data.source_code,
-            selectable=True,
-            extension_set="gitHubWeb",
-            code_theme="atom-one-dark",
-            code_style=ft.TextStyle(font_family="Roboto Mono"),
-            #on_tap_link=lambda e: ft.page.launch_url(e.data),
-        )
         code_text = ft.Text(value=e.control.data.source_code, selectable=True)
-        #dlg.content = ft.ListView(width=500, controls=[code_markdown])
         
         dlg.content = ft.Column(controls=[code_text], scroll="always")
+        dlg.data = e.control.data.source_code
         page.update() 
     
     def get_destinations():
@@ -240,6 +232,11 @@ def main(page: ft.Page):
         bgcolor=ft.colors.INVERSE_PRIMARY,
     )
     
+    def copy_to_clipboard(e):
+        source_code = dlg.data
+        page.set_clipboard(source_code)
+        page.show_snack_bar(ft.SnackBar(ft.Text(f"Example source code copied to clipboard"), open=True))
+    
     def close_dlg(e):
         dlg.open = False
         page.update()
@@ -249,7 +246,7 @@ def main(page: ft.Page):
     dlg = ft.AlertDialog(
         title=code_example_name,
         actions=[
-            ft.FilledButton("Copy to clipboard", on_click=close_dlg),
+            ft.FilledButton("Copy to clipboard", on_click=copy_to_clipboard),
             ft.TextButton("Close", on_click=close_dlg),
         ],
         actions_alignment=ft.MainAxisAlignment.END,
