@@ -120,6 +120,25 @@ def main(page: ft.Page):
             destinations.append(ft.NavigationRailDestination(icon=destination.icon, selected_icon=destination.selected_icon, label=destination.label))
         return destinations
     
+    def theme_changed(e):
+        # page.theme_mode = (
+        #     ft.ThemeMode.DARK
+        #     if e.control.page.theme_mode == ft.ThemeMode.LIGHT
+        #     else ft.ThemeMode.LIGHT
+        # )
+        # c.label = (
+        #     "Light theme" if e.control.page.theme_mode == ft.ThemeMode.LIGHT else "Dark theme"
+        # )
+        if page.theme_mode == ft.ThemeMode.LIGHT:
+            page.theme_mode = ft.ThemeMode.DARK
+            dark_light_text.value = "Dark theme"
+        else:
+            page.theme_mode = ft.ThemeMode.LIGHT
+            dark_light_text.value = "Light theme"
+        page.update()
+
+    dark_light_text = ft.Text("Light theme")
+    
     rail = ft.Column(
         controls=[
             ft.NavigationRail(
@@ -132,10 +151,21 @@ def main(page: ft.Page):
                 destinations=get_destinations(),
                 on_change=control_group_selected
             ),
-            ft.Column(controls=[
-                ft.Switch(label="Light theme"),
-                ft.IconButton(icon=ft.icons.COLOR_LENS_OUTLINED)
-            ])]
+            ft.Column(
+                controls=[
+                    ft.Row(controls=[
+                        ft.IconButton(icon=ft.icons.BRIGHTNESS_2_OUTLINED, tooltip="Toggle brightness", on_click=theme_changed),
+                        dark_light_text]),
+                    ft.Row(controls=[
+                        ft.IconButton(icon=ft.icons.FORMAT_PAINT_OUTLINED, tooltip="Colors"),
+                        ft.Text("Colors")
+                    ]),
+                    ft.Row(controls=[
+                        ft.PopupMenuButton(icon=ft.icons.COLOR_LENS_OUTLINED),
+                        ft.Text("Seed color")
+                    ])
+                    
+                ])]
     )
     grid = ft.GridView(
         expand=1,
