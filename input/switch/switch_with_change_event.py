@@ -15,6 +15,7 @@ def example():
         )
         e.control.page.update()
 
-    c = ft.Switch(label="Light theme", on_change=theme_changed)
     
+    c = ft.Switch(label="Dark/Light theme", on_change=theme_changed)
+
     return c

@@ -42,7 +42,8 @@ class GalleryData():
         ControlGroup(name='dialogs', label='Dialogs', icon=ft.icons.INPUT, selected_icon=ft.icons.INPUT),
         ControlGroup(name='charts', label='Charts', icon=ft.icons.MESSAGE_OUTLINED, selected_icon=ft.icons.MESSAGE_SHARP),
         ControlGroup(name='animations', label='Animations', icon=ft.icons.ANIMATION, selected_icon=ft.icons.ANIMATION),
-        ControlGroup(name='utility', label='Utility', icon=ft.icons.PAN_TOOL_OUTLINED, selected_icon=ft.icons.PAN_TOOL_SHARP)
+        ControlGroup(name='utility', label='Utility', icon=ft.icons.PAN_TOOL_OUTLINED, selected_icon=ft.icons.PAN_TOOL_SHARP),
+        ControlGroup(name='colors', label='Colors', icon=ft.icons.FORMAT_PAINT_OUTLINED, selected_icon=ft.icons.FORMAT_PAINT_SHARP)
     ]
     
     def list_control_dirs(self, dir):
